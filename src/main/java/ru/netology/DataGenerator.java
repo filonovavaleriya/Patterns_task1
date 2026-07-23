@@ -1,0 +1,58 @@
+package ru.netology;
+
+import com.github.javafaker.Faker;
+import lombok.Value;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
+import java.util.Random;
+
+public class DataGenerator {
+    private DataGenerator() {
+    }
+
+    public static String generateDate(int days) {
+        return LocalDate.now().plusDays(days).format(DateTimeFormatter.ofPattern("dd.MM.yyyy"));
+    }
+
+    public static String generateCity() {
+        var cities = new String[]{
+                "Архангельск", "Барнаул", "Брянск", "Великий Новгород", "Владимир", "Вологда", "Воронеж",
+                "Горно-Алтайск", "Екатеринбург", "Иваново", "Ижевск", "Иркутск", "Йошкар-Ола", "Казань", "Калининград",
+                "Калуга", "Кемерово", "Киров", "Кострома", "Красноярск",
+                "Курган", "Курск", "Липецк", "Мурманск", "Нижний Новгород", "Орел",
+                "Оренбург", "Пенза", "Пермь", "Петрозаводск", "Псков", "Рязань", "Салехард", "Самара", "Санкт-Петербург", "Саранск", "Саратов", "Смоленск", "Сыктывкар",
+                "Тамбов", "Тверь", "Тула", "Тюмень", "Улан-Удэ", "Ульяновск",
+                "Уфа", "Хабаровск", "Чебоксары", "Челябинск", "Чита", "Ярославль"
+        };
+        return cities[new Random().nextInt(cities.length)];
+    }
+
+    public static String generateName(String locale) {
+        Faker faker = new Faker(new Locale(locale));
+        return faker.name().lastName() + " " + faker.name().firstName();
+    }
+
+    public static String generatePhone(String locale) {
+        Faker faker = new Faker(new Locale(locale));
+        return faker.phoneNumber().phoneNumber();
+    }
+
+    public static class Registration {
+        private Registration() {
+        }
+
+        public static UserInfo generateUser(String locale) {
+            return new UserInfo(generateCity(), generateName(locale), generatePhone(locale));
+        }
+    }
+
+    @Value
+    public static class UserInfo {
+        String city;
+        String name;
+        String phone;
+    }
+
+}
